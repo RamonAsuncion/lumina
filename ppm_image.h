@@ -1,12 +1,15 @@
+#ifndef _PPM_IMAGE_H_
+#define _PPM_IMAGE_H_
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-#define GET_PIXEL(image, x, y) \
-  ((y) * (image)->width * 3 + (x) * 3)
+#define GET_PIXEL(_image, _x, _y) \
+  ((_y) * (_image)->width * 3 + (_x) * 3)
 
-#define IMAGE_SIZE(image) ((image)->width * (image)->height * 3)
+#define IMAGE_SIZE(_image) ((_image)->width * (_image)->height * 3)
 
 struct ppm_image {
   int width;
@@ -29,7 +32,7 @@ struct ppm_image create_ppm_image(int width, int height, int max_value)
   }
 
   /**
-   * Set all pixels to white.
+   * default: set all pixels to max value.
    */
   for (int i = 0; i < IMAGE_SIZE(&image); ++i) {
     image.data[i] = max_value;
@@ -159,7 +162,10 @@ void move_ppm_image(struct ppm_image *dest, struct ppm_image *src)
   dest->height = src->height;
   dest->max_value = src->max_value;
   dest->data = src->data;
-  src->data = NULL; // no accidental free
+  /**
+    * no accidental free
+    */
+  src->data = NULL;
 }
 
 void print_ppm_image(struct ppm_image *image)
@@ -181,3 +187,4 @@ void free_ppm_image(struct ppm_image *image)
   image->data = NULL;
 }
 
+#endif /* _PPM_IMAGE_H_ */
