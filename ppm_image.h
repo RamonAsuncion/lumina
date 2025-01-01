@@ -156,6 +156,34 @@ struct ppm_image negative_effect_ppm_image(struct ppm_image *image)
   return new_image;
 }
 
+/**
+ * Gray scale
+ * Reference: https://en.wikipedia.org/wiki/Grayscale#Converting_color_to_grayscale
+ */
+struct ppm_image gray_scale_effect_ppm_image(struct ppm_image *image)
+{
+  struct ppm_image new_image = create_ppm_image(image->width, image->height, image->max_value);
+
+  for (int y = 0; y < image->height; ++y) {
+    for (int x = 0; x < image->width; ++x) {
+      int idx = GET_PIXEL(image, x, y);
+
+      unsigned char gray = (unsigned char)(
+        0.299 * image->data[idx] +
+        0.587 * image->data[idx + 1] +
+        0.144 * image->data[idx + 2]
+       );
+
+      new_image.data[idx] = gray;
+      new_image.data[idx + 1] = gray;
+      new_image.data[idx + 2] = gray;
+    }
+  }
+
+  return new_image;
+}
+
+
 void move_ppm_image(struct ppm_image *dest, struct ppm_image *src)
 {
   dest->width = src->width;
