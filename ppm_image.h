@@ -160,7 +160,7 @@ struct ppm_image negative_effect_ppm_image(struct ppm_image *image)
  * Gray scale
  * Reference: https://en.wikipedia.org/wiki/Grayscale#Converting_color_to_grayscale
  */
-struct ppm_image gray_scale_effect_ppm_image(struct ppm_image *image)
+struct ppm_image grayscale_effect_ppm_image(struct ppm_image *image)
 {
   struct ppm_image new_image = create_ppm_image(image->width, image->height, image->max_value);
 
@@ -182,7 +182,6 @@ struct ppm_image gray_scale_effect_ppm_image(struct ppm_image *image)
 
   return new_image;
 }
-
 
 void move_ppm_image(struct ppm_image *dest, struct ppm_image *src)
 {

@@ -9,6 +9,7 @@ void print_usuage(char *prog_name)
   fprintf(stderr, "Options:\n");
   fprintf(stderr, "  -i <image>   Specify input image file (required)\n");
   fprintf(stderr, "  -n           Apply negative effect\n");
+  fprintf(stderr, "  -g           Apply grayscale effect\n");
   fprintf(stderr, "  -o <output>  Specify output file name (default: output.ppm)\n");
 }
 
@@ -16,7 +17,7 @@ int main(int argc, char **argv)
 {
   char *input_file = NULL;
   char *output_file = "output.ppm";
-  int apply_negative = 0;
+  int apply_negative = 0, apply_gray_scale = 0;
 
   int opt;
   while ((opt = getopt(argc, argv, "i:ngso:")) != -1) {
@@ -26,6 +27,9 @@ int main(int argc, char **argv)
         break;
       case 'n':
         apply_negative = 1;
+        break;
+      case 'g':
+        apply_gray_scale = 1;
         break;
       case 'o':
         output_file = optarg;
@@ -54,6 +58,12 @@ int main(int argc, char **argv)
     struct ppm_image negative_effect_image = negative_effect_ppm_image(&processed_image);
     free_ppm_image(&processed_image);
     move_ppm_image(&processed_image, &negative_effect_image);
+  }
+
+  if (apply_gray_scale) {
+    struct ppm_image grayscale_effect_image = grayscale_effect_ppm_image(&processed_image);
+    free_ppm_image(&processed_image);
+    move_ppm_image(&processed_image, &grayscale_effect_image);
   }
 
   if (write_ppm(output_file, &processed_image) != 0) {
