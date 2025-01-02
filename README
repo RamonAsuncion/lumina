@@ -2,3 +2,4 @@ basic image processing library in c
 
 only supports
 - color inversion
+- grayscale
